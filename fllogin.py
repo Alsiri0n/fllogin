@@ -15,7 +15,7 @@ def index():
         return redirect(url_for('profile', username=session['userLogged']))
     elif request.method == 'POST' and \
          request.form['username'] == 'adm1n' and \
-         request.form['psw'] == "123"
+         request.form['psw'] == "123":
          session['userLogged'] = request.form['username']
          return redirect(url_for('profile', uysername=session['userLogged']))
     return render_template('fllogin/login.html', title='Авторизация')
