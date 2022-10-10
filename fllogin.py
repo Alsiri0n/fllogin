@@ -1,7 +1,7 @@
 """
-Test submodule working for Jenkins CI/CD
+Login submodule for flask application
 """
-from flask import Blueprint,render_template,request,flash
+from flask import Blueprint,render_template,request,flash, session, redirect, url_for
 
 fllogin = Blueprint('fllogin', __name__, template_folder='templates', static_folder='static')
 
@@ -9,11 +9,14 @@ fllogin = Blueprint('fllogin', __name__, template_folder='templates', static_fol
 @fllogin.route('/', methods=["GET", "POST"])
 def index():
     """
-    Test index page for submodule
+    Index page for fllogin
     """
-    if request.method == 'POST':
-        if len(request.form['username']) > 2:
-            flash('Сообщение отправлено', category="success")
-        else:
-            flash('Ошибка отправки', category="error")
-    return render_template('fllogin/login.html', title='Логин')
+    if 'userLogged' in session:
+        return redirect(url_for('profile', username=session['userLogged']))
+    elif request.method == 'POST' and \
+         request.form['username'] == 'adm1n' and \
+         request.form['psw'] == "123"
+         session['userLogged'] = request.form['username']
+         return redirect(url_for('profile', uysername=session['userLogged']))
+    return render_template('fllogin/login.html', title='Авторизация')
+ 
