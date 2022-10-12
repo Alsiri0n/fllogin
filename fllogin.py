@@ -17,5 +17,6 @@ def index():
          request.form['username'] == 'adm1n' and \
          request.form['psw'] == "123":
          session['userLogged'] = request.form['username']
-         return redirect(url_for('profile', username=session['userLogged']))
+        # For url_for used fullname flprofile.profile
+         return redirect(url_for('flprofile.profile', username=session['userLogged']))
     return render_template('fllogin/login.html', title='Авторизация')
