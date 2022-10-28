@@ -2,11 +2,12 @@
 Login submodule for flask application
 """
 from flask import Blueprint,render_template,request,flash, session, redirect, url_for
+from werkzeug.security import generate_password_hash
 
 fllogin = Blueprint('fllogin', __name__, template_folder='templates', static_folder='static')
 
 
-@fllogin.route('/', methods=["GET", "POST"])
+@fllogin.route('/', methods=['GET', 'POST'])
 def index():
     """
     Index page for fllogin
@@ -21,10 +22,30 @@ def index():
          return redirect(url_for('flprofile.profile', username=session['userLogged']))
     return render_template('fllogin/login.html', title='Авторизация')
 
-@fllogin.route('/register', methods=["GET", "POST"])
+@fllogin.route('/register', methods=['GET', 'POST'])
 def register():
     """
     Registration page for fllogin
     """
+    if request.method == 'POST':
+        if len(request.form['name']) > 4 and len(request.form['email']) > 4 \
+            and len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']:
+            hash = generate_password_hash(request.form['psw'])
+            res = dbase.addUser(request.form['name'], request.form['email'], hash)
+            if res:
+                flash('Вы успешно зарегистрированы','success')
+                return redirect(url_for('fllogin.index'))
+            else:
+                flash('Ошибка добавления в БД','error')
+        else:
+            flash('Неверно заполнены поля','error')
     return render_template('fllogin/register.html', title='Регистрация')
 
+
+@fllogin.route('/logout', methods=["GET", "POST"])
+def logout():
+    """
+    Implement logout
+    """
+    session.pop('userLogged')
+    return redirect(url_for('.index'))
