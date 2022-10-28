@@ -56,7 +56,7 @@ def register():
             len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']
             ):
             cur_hash = generate_password_hash(request.form['psw'])
-            res = dbase.addUser(request.form['username'], request.form['email'], cur_hash)
+            res = dbase.add_user(request.form['username'], request.form['email'], cur_hash)
             if res:
                 flash('Вы успешно зарегистрированы','success')
                 return redirect(url_for('fllogin.index'))
