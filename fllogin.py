@@ -16,6 +16,7 @@ def before_request():
     Establish connection to DB before execution request
     """
     global db
+    global dbase
     db = g.get('link_db')
     dbase = Flsql(db)
 
@@ -25,6 +26,7 @@ def teardown_request(request):
     """
     Close connection to database, if connected
     """
+    global db
     global dbase
     dbase = None
     return request
@@ -43,7 +45,7 @@ def index():
          session['userLogged'] = request.form['username']
         # For url_for used fullname flprofile.profile
          return redirect(url_for('flprofile.profile', username=session['userLogged']))
-    return render_template('fllogin/login.html', title='Авторизация')
+    return render_template('fllogin/login.html', menu=dbase.get_menu(), title='Авторизация')
 
 @fllogin.route('/register', methods=['GET', 'POST'])
 def register():
@@ -64,7 +66,7 @@ def register():
                 flash('Ошибка добавления в БД','error')
         else:
             flash('Неверно заполнены поля','error')
-    return render_template('fllogin/register.html', title='Регистрация')
+    return render_template('fllogin/register.html', menu=dbase.get_menu(), title='Регистрация')
 
 
 @fllogin.route('/logout', methods=["GET", "POST"])
