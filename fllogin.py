@@ -20,3 +20,11 @@ def index():
         # For url_for used fullname flprofile.profile
          return redirect(url_for('flprofile.profile', username=session['userLogged']))
     return render_template('fllogin/login.html', title='Авторизация')
+
+@fllogin.route('/register', methods=["GET", "POST"])
+def register():
+    """
+    Registration page for fllogin
+    """
+    return render_template('fllogin/register.html', title='Регистрация')
+

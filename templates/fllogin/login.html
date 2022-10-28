@@ -2,9 +2,15 @@
 
 {% block content %}
 {{ super() }}
+{% for cat, msg in get_flashed_messages(True) %}
+<div class="flash {{cat}}">{{msg}}</div>
+{% endfor %}
 <form action="" method="POST" class="form-contact">
-    <p><label for="username">Имя: </label><input type="text" name="username" value="" required></p>
-    <p><label for="psw">Пароль: </label><input type="password" name="psw" value="" required></p>
+    <p><label for="username">Имя: </label>          <input type="text" name="username" value="" required id="username"></p>
+    <p><label for="psw">Пароль: </label>            <input type="password" name="psw" value="" required id="psw"></p>
+    <p><label for="remainme">Запомнить меня</label> <input type="checkbox" name="remainme" id="remainme"></p>
     <p><input type="submit" value="Войти"></p>
+    <hr align="left" width="300pxgit">
+    <p><a href="{{url_for('fllogin.register')}}">Регистрация</a></p>
 </form>
 {% endblock %}
