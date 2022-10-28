@@ -28,10 +28,12 @@ def register():
     Registration page for fllogin
     """
     if request.method == 'POST':
-        if len(request.form['name']) > 4 and len(request.form['email']) > 4 \
-            and len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']:
+        if (
+            len(request.form['username']) > 4 and len(request.form['email']) > 4 and \
+            len(request.form['psw']) > 4 and request.form['psw'] == request.form['psw2']
+            ):
             hash = generate_password_hash(request.form['psw'])
-            res = dbase.addUser(request.form['name'], request.form['email'], hash)
+            res = dbase.addUser(request.form['username'], request.form['email'], hash)
             if res:
                 flash('Вы успешно зарегистрированы','success')
                 return redirect(url_for('fllogin.index'))
