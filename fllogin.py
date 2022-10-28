@@ -12,7 +12,7 @@ def index():
     Index page for fllogin
     """
     if 'userLogged' in session:
-        return redirect(url_for('profile', username=session['userLogged']))
+        return redirect(url_for('flprofile.profile', username=session['userLogged']))
     elif request.method == 'POST' and \
          request.form['username'] == 'adm1n' and \
          request.form['psw'] == "123":
