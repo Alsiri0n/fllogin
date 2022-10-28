@@ -1,10 +1,31 @@
 """
 Login submodule for flask application
 """
-from flask import Blueprint,render_template,request,flash, session, redirect, url_for
+from flask import Blueprint,render_template,request,flash, session, redirect, url_for, g
 from werkzeug.security import generate_password_hash
 
 fllogin = Blueprint('fllogin', __name__, template_folder='templates', static_folder='static')
+
+dbase = None
+
+
+@fllogin.before_request
+def before_request():
+    """
+    Establish connection to DB before execution request
+    """
+    global dbase
+    dbase = g.get('link_db')
+
+
+@fllogin.teardown_request
+def teardown_request(request):
+    """
+    Close connection to database, if connected
+    """
+    global dbase
+    dbase = None
+    return request
 
 
 @fllogin.route('/', methods=['GET', 'POST'])
